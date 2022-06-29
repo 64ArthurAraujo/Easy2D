@@ -41,6 +41,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RTCircles.Droid", "RTCircle
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Easy2D.Tests", "Easy2D.Tests\Easy2D.Tests.csproj", "{2F68595A-1885-47F8-AD2B-AA2279CDD4FB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RTCircles.Tests", "RTCircles.Tests\RTCircles.Tests.csproj", "{5954D448-0605-48EB-A480-B6448EF92EB4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -125,6 +127,10 @@ Global
 		{2F68595A-1885-47F8-AD2B-AA2279CDD4FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2F68595A-1885-47F8-AD2B-AA2279CDD4FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2F68595A-1885-47F8-AD2B-AA2279CDD4FB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5954D448-0605-48EB-A480-B6448EF92EB4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5954D448-0605-48EB-A480-B6448EF92EB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5954D448-0605-48EB-A480-B6448EF92EB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5954D448-0605-48EB-A480-B6448EF92EB4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
