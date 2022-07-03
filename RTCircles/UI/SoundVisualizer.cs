@@ -609,7 +609,7 @@ namespace RTCircles
             test2(SmoothBuffer[0..10], g, step, new Vector4(1, 1, 1, 1), BarLength, 0.1);
             */
             //Kicks/drums/bass?
-            test2(GetFrequencyRangeFFT(20, 150), g, 0, new Vector4(1, 1, 1, 1), BarLength / 1.5f);
+            test2(GetFrequencyRangeFFT(40, 150), g, 0, new Vector4(1, 1, 1, 1), BarLength / 2f);
 
             //Symbals idk just the more high pitched stuff
             test2(GetFrequencyRangeFFT(200, 300), g, MathF.PI/2, new Vector4(1, 0, 0, 1), BarLength / 1.5f);
@@ -1046,6 +1046,9 @@ namespace RTCircles
             var startIndex = (int)(startFreq / indexFrequency);
             var count = (int)(endFreq / indexFrequency) - startIndex;
 
+            if (count < 1)
+                return Span<float>.Empty;
+
             return lol.AsSpan((int)(startFreq / indexFrequency), count);
         }
 
@@ -1073,7 +1076,7 @@ namespace RTCircles
                 SmoothBuffer[i] = MathHelper.Lerp(SmoothBuffer[i], buffValue, delta * LerpSpeed);
             }
 
-            for (int i = 0; i < RawBuffer.Length; i++)
+            for (int i = 0; i < 512; i++)
             {
                 lol[i] = MathHelper.Lerp(lol[i], RawBuffer[i], delta * LerpSpeed);
             }

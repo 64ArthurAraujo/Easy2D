@@ -2,7 +2,6 @@
 using OpenTK.Mathematics;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using OsuParsers.Beatmaps;
@@ -12,220 +11,6 @@ using Realms;
 
 namespace RTCircles
 {
-
-    //recode this piece of shit//recode this piece of shit//recode this piece of shit//recode this piece of shit
-    //recode this piece of shit
-    //recode this piece of shit
-    //recode this piece of shit
-
-    public static class DynamicTexureCache
-    {
-        private static Dictionary<string, (Texture, List<Guid>)> textureCache = new Dictionary<string, (Texture, List<Guid>)>();
-
-        public static (Guid, Texture) AquireCache(Guid id, string path)
-        {
-            if (textureCache.TryGetValue(path, out var value))
-            {
-                if (!value.Item2.Contains(id))
-                {
-                    value.Item2.Add(id);
-                }
-
-                return (id, value.Item1);
-            }
-            else
-            {
-                var tex = System.IO.File.Exists(path) ? 
-                    new Texture(System.IO.File.OpenRead(path)) : Skin.DefaultBackground;
-
-                var toAdd = (tex, new List<Guid>() { id });
-                textureCache.Add(path, toAdd);
-
-                return (id, toAdd.Item1);
-            }
-        }
-
-        public static void ReleaseCache(Guid guid, string path)
-        {
-            //Console.WriteLine($"Releasing cache for: {guid}");
-            if (textureCache.TryGetValue(path, out var value))
-            {
-                var index = value.Item2.IndexOf(guid);
-                if (index != -1)
-                {
-                    value.Item2.RemoveAt(index);
-                    //Console.WriteLine($"Released cache for: {guid} Count: {value.Item2.Count}");
-
-                    if (value.Item2.Count == 0)
-                    {
-                        value.Item1 = null;
-                        //Console.WriteLine("No more references, it has been deleted");
-                    }
-                }
-            }
-        }
-    }
-
-    //Make items, sets
-    public class CarouselItem
-    {
-        public string Text { get; private set; }
-
-        public string Hash { get; private set; }
-
-        private Guid id = Guid.NewGuid();
-
-        public string FullPath { get; private set; }
-        public string Folder { get; private set; }
-
-        private string BackgroundPath { get; set; }
-
-        public float TextureAlpha { get; private set; }
-        private SmoothFloat sFloat = new SmoothFloat();
-
-        public Texture Texture { get; private set; }
-
-        public bool IsVisible;
-
-        public double Difficulty;
-
-        public DBBeatmapInfo DBBeatmapInfo { get; private set; }
-
-        private double showTimer = 0;
-
-        public void SetDBBeatmap(DBBeatmapInfo dbBeatmap)
-        {
-            Text = dbBeatmap.Filename.Replace(".osu", "");
-            Hash = dbBeatmap.Hash;
-            Folder = dbBeatmap.SetInfo.Foldername;
-            FullPath = $"{BeatmapMirror.SongsDirectory}/{dbBeatmap.SetInfo.Foldername}/{dbBeatmap.Filename}";
-            BackgroundPath = dbBeatmap.BackgroundFilename is not null ? $"{BeatmapMirror.SongsDirectory}/{dbBeatmap.SetInfo.Foldername}/{dbBeatmap.BackgroundFilename}" : null;
-        }
-
-        public bool OnShow()
-        {
-            showTimer += MainGame.Instance.DeltaTime;
-
-            if (showTimer < 0.075)
-                return true;
-
-            if (Texture?.ImageDoneUploading == true)
-                sFloat.Update((float)MainGame.Instance.DeltaTime);
-
-            TextureAlpha = sFloat.Value;
-
-            if (IsVisible == false)
-            {
-                IsVisible = true;
-                if (string.IsNullOrEmpty(BackgroundPath) == false)
-                {
-                    sFloat.TransformTo(1f, 0.5f, EasingTypes.Out);
-                    Texture = DynamicTexureCache.AquireCache(id, BackgroundPath).Item2;
-                }
-            }
-
-            return true;
-        }
-
-        public void OnHide()
-        {
-            showTimer = 0;
-
-            if (IsVisible == true)
-            {
-                IsVisible = false;
-
-                if (string.IsNullOrEmpty(BackgroundPath) == false)
-                    DynamicTexureCache.ReleaseCache(id, BackgroundPath);
-
-                sFloat.Value = 0;
-                Texture = null;
-            }
-        }
-    }
-
-    public static class BeatmapCollection
-    {
-
-        public static List<CarouselItem> Items = new List<CarouselItem>();
-
-        public static List<CarouselItem> SearchItems = new List<CarouselItem>();
-
-        public static Dictionary<string, CarouselItem> HashedItems = new Dictionary<string, CarouselItem>();
-
-        public static event Action SearchResultsChanged;
-        public static string SearchQuery;
-
-        static BeatmapCollection()
-        {
-            SearchItems = Items;
-        }
-
-        public static void AddItem(CarouselItem item)
-        {
-            HashedItems.Add(item.Hash, item);
-            Items.Add(item);
-            FindText(SearchQuery);
-        }
-
-        public static void DeleteMap(CarouselItem item)
-        {
-            HashedItems.Remove(item.Hash);
-            Items.Remove(item);
-            SearchItems.Remove(item);
-
-            bool fileExists = false;
-            if (System.IO.File.Exists(item.FullPath))
-            {
-                fileExists = true;
-                System.IO.File.Delete(item.FullPath);
-            }
-
-            BeatmapMirror.DatabaseAction((realm) =>
-            {
-                var bm = realm.Find<DBBeatmapInfo>(item.Hash);
-
-                realm.Write(() =>
-                {
-                    bm.SetInfo.Beatmaps.Remove(bm);
-                    realm.Remove(bm);
-                });
-            });
-
-            NotificationManager.ShowMessage($"Beatmap with hash: {item.Hash} has been deleted! File: {(fileExists ? "Existed" : "Did not exist")}", ((Vector4)Color4.CornflowerBlue).Xyz, 5f);
-        }
-
-        public static void FindText(string text)
-        {
-            SearchQuery = text;
-
-            if (string.IsNullOrEmpty(text))
-            {
-                SearchItems = Items;
-                return;
-            }
-
-            var keywords = text.Split(' ');
-
-            SearchItems = Items.Where((o) =>
-            {
-                var foundMatch = true;
-                foreach (var keyword in keywords)
-                {
-                    if (o.Text.ToLower().Contains(keyword.ToLower()) == false)
-                    {
-                        foundMatch = false;
-                        break;
-                    }
-                }
-
-                return foundMatch;
-            }).ToList();
-
-            SearchResultsChanged?.Invoke();
-        }
-    }
-
     public class SongSelectScreen : Screen
     {
         public SongSelector SongSelector { get; private set; } = new SongSelector();
@@ -234,23 +19,24 @@ namespace RTCircles
 
         public SongSelectScreen()
         {
-            BeatmapMirror.OnNewBeatmapAvailable += (beatmap, showNotification) =>
+            BeatmapMirror.OnNewBeatmapSetAvailable += (set, showNotification) =>
             {
-                AddBeatmapToCarousel(beatmap);
+                CarouselItem firstItem = null;
+                foreach (var beatmap in set.Beatmaps)
+                {
+                    var itemAdded = AddBeatmapToCarousel(beatmap);
+
+                    if(firstItem == null)
+                        firstItem = itemAdded;
+                }
 
                 if (!showNotification)
                     return;
 
-                string hash = beatmap.Hash;
-                NotificationManager.ShowMessage($"Imported {beatmap.Filename}", ((Vector4)Color4.LightGreen).Xyz, 3, () => {
+                NotificationManager.ShowMessage($"Imported {firstItem.Folder}", ((Vector4)Color4.LightGreen).Xyz, 3, () => {
                     if (ScreenManager.ActiveScreen is not OsuScreen)
                     {
-                        var foundBeatmap = BeatmapCollection.SearchItems.Find((o) => o.Hash == hash);
-
-                        if (foundBeatmap != null)
-                            this.SongSelector.SelectBeatmap(foundBeatmap);
-                        else
-                            NotificationManager.ShowMessage("The beatmap was somehow not found even though it was just imported it? o.o", Colors.White.Xyz, 5f);
+                        this.SongSelector.SelectBeatmap(firstItem);
                     }
                 });
             };
@@ -263,24 +49,29 @@ namespace RTCircles
             Add(SongSelector);
         }
 
-        public void AddBeatmapToCarousel(DBBeatmapInfo dBBeatmap)
+        public CarouselItem AddBeatmapToCarousel(DBBeatmapInfo dBBeatmap)
         {
             //Dont add to carousel if we already have this item
             //Utils.Log($"Adding DBBeatmap: {dBBeatmap.Filename} Current carousel item count: {BeatmapCollection.Items.Count}", LogLevel.Debug);
 
-            if (BeatmapCollection.HashedItems.ContainsKey(dBBeatmap.Hash))
-                return;
+            if (BeatmapCollection.HashedItems.TryGetValue(dBBeatmap.Hash, out var existingItem))
+            {
+                existingItem.SetDBBeatmap(dBBeatmap);
+                return existingItem;
+            }
 
             if(dBBeatmap.SetInfo == null)
             {
                 //Utils.Log($"Beatmap set info was null", LogLevel.Error);
-                return;
+                throw new Exception("SetInfo was null?");
             }
 
             CarouselItem newItem = new CarouselItem();
             newItem.SetDBBeatmap(dBBeatmap);
 
             BeatmapCollection.AddItem(newItem);
+
+            return newItem;
         }
 
         public void LoadCarouselItems(Realm realm)

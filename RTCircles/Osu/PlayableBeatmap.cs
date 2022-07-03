@@ -17,6 +17,11 @@ namespace RTCircles
         public HitsoundStore Hitsounds { get; private set; }
         public Sound Song { get; private set; }
 
+        private Guid backgroundGuid = Guid.NewGuid();
+        private string backgroundPath = "";
+
+        public bool IsNewBackground { get; private set; } = true;
+
         public Texture Background { get; private set; }
 
         public Beatmap InternalBeatmap { get; private set; }
@@ -51,8 +56,6 @@ namespace RTCircles
         public float CircleRadiusInOsuPixels => 54.4f - 4.48f * CS;
 
         public List<double> DifficultyGraph = new List<double>();
-
-        public string BackgroundPath { get; private set; } = "";
 
         public string AudioPath { get; private set; } = "";
 
@@ -134,14 +137,11 @@ namespace RTCircles
 
             string bgPath = $"{folderPath}/{playableBeatmap.InternalBeatmap.EventsSection.BackgroundImage}";
 
-            playableBeatmap.BackgroundPath = bgPath;
+            playableBeatmap.backgroundPath = bgPath;
+            //Just get the cache since it was properly already loaded from beatmap carousel
+            playableBeatmap.Background = DynamicTexureCache.AquireCache(playableBeatmap.backgroundGuid, playableBeatmap.backgroundPath);
 
-            if (playableBeatmap.BackgroundPath == OsuContainer.Beatmap?.BackgroundPath)
-                playableBeatmap.Background = OsuContainer.Beatmap.Background;
-            else if (File.Exists(bgPath)) 
-                playableBeatmap.Background = new Texture(File.OpenRead(bgPath));
-            else
-                playableBeatmap.Background = Skin.DefaultBackground;
+            playableBeatmap.IsNewBackground = OsuContainer.Beatmap?.Background != playableBeatmap.Background;
 
             return playableBeatmap;
         }
@@ -298,6 +298,8 @@ namespace RTCircles
             System.Numerics.Vector2 currentStack = System.Numerics.Vector2.Zero;
             double stackTimeThreshold = Preempt * InternalBeatmap.GeneralSection.StackLeniency;
 
+            double stackBaseObjectEndTime = 0;
+
             void resetStacking()
             {
                 currentStack = System.Numerics.Vector2.Zero;
@@ -314,6 +316,7 @@ namespace RTCircles
                     //Add no stacked position to slider points
                     slider.SliderPoints.Insert(0, slider.Position);
                 }
+                
 
                 //If theres no next object just continue
                 if (i + 1 >= InternalBeatmap.HitObjects.Count)
@@ -321,14 +324,12 @@ namespace RTCircles
 
                 var next = InternalBeatmap.HitObjects[i + 1];
 
-                //Spinners reset stacking
+                //Spinners apparently dont reset stacking
                 if (next is Spinner)
-                {
-                    resetStacking();
                     continue;
-                }
 
-                if (next.StartTime - current.StartTime < stackTimeThreshold)
+                
+                if (stackBaseObjectEndTime - current.StartTime > stackTimeThreshold)
                 {
                     resetStacking();
                     continue;
@@ -340,6 +341,9 @@ namespace RTCircles
 
                 if ((current.Position - currentStack) == next.Position)
                 {
+                    if (currentStack.X == 0)
+                        stackBaseObjectEndTime = current.EndTime;
+
                     //Keep making the stack bigger while they overlap
                     currentStack += new System.Numerics.Vector2(3, 3);
                     
@@ -390,37 +394,6 @@ namespace RTCircles
             {
                 var hitObject = InternalBeatmap.HitObjects[i];
 
-                /*
-                //Fix this shitty stacking mechanism
-                for (int j = i; j < InternalBeatmap.HitObjects.Count - 1; j++)
-                {
-                    var previous = InternalBeatmap.HitObjects[j];
-                    var next = InternalBeatmap.HitObjects[j + 1];
-
-                    if (next is Spinner)
-                        break;
-
-                    double stackThreshold = Preempt * InternalBeatmap.GeneralSection.StackLeniency;
-
-                    if (next.StartTime - previous.StartTime < stackThreshold)
-                        break;
-
-                    if (hitObject.Position == next.Position)
-                    {
-                        next.Position += new System.Numerics.Vector2(3, 3);
-
-                        if(next is Slider nextSlider)
-                        {
-                            for (int k = 0; k < nextSlider.SliderPoints.Count; k++)
-                            {
-                                nextSlider.SliderPoints[k] += new System.Numerics.Vector2(3, 3);
-                            }
-                        }
-                    }
-                    else
-                        break;
-                }
-                */
                 if (hitObject.IsNewCombo)
                 {
                     combo = 1;
@@ -511,6 +484,11 @@ namespace RTCircles
 
             return mid;
 
+        }
+
+        ~PlayableBeatmap()
+        {
+            DynamicTexureCache.ReleaseCache(backgroundGuid, backgroundPath);
         }
     }
 }

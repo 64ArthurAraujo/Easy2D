@@ -49,6 +49,8 @@ namespace RTCircles
             Add(osuFolderTextbox);
             Add(skinDropdown);
 
+            Add(new MapBackground() { BEAT_SIZE = 0, Zoom = 0, ParallaxAmount = 0, Opacity = 0.1f, KiaiFlash = 0.1f, ShowMenuFlash = false, Layer = -1000 });
+
             populateSkinList();
         }
 
@@ -57,9 +59,20 @@ namespace RTCircles
             skinDropdown.ClearItems();
 
             var skinFolder = GlobalOptions.OsuFolder.Value + "/Skins";
-
+            
             if (System.IO.Directory.Exists(skinFolder))
             {
+                DropdownItem defaultSkin = new DropdownItem();
+                defaultSkin.Text = "Default";
+                defaultSkin.Color = Colors.White;
+                defaultSkin.TextColor = Colors.Black;
+                defaultSkin.OnClick += () =>
+                {
+                    Skin.Load("");
+                    GlobalOptions.SkinFolder.Value = "";
+                };
+                skinDropdown.AddItem(defaultSkin);
+
                 foreach (var directory in System.IO.Directory.EnumerateDirectories(skinFolder))
                 {
                     var dir = directory.Replace('\\', '/');
@@ -186,6 +199,8 @@ namespace RTCircles
 
         public override void Render(Graphics g)
         {
+            base.Render(g);
+
             drawOffsetAdjuster(g);
             /*
             layoutDrawableStack(g, MainGame.WindowCenter, new Vector2(1200, 300) * MainGame.Scale, 10 * MainGame.Scale, origin,
@@ -241,7 +256,6 @@ namespace RTCircles
             }
 
             clickedSomewhere = false;
-            base.Render(g);
         }
 
         enum PositionOrigin
