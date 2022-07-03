@@ -4,6 +4,7 @@ using OpenTK.Mathematics;
 using Silk.NET.Input;
 using System;
 using System.Collections.Generic;
+using Easy2D.OpenGL;
 
 namespace RTCircles
 {

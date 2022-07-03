@@ -1,9 +1,5 @@
 ﻿using Easy2D;
-using OpenTK.Mathematics;
 using Silk.NET.Input;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace RTCircles
 {

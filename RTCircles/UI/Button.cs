@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Easy2D;
 using Easy2D.Game;
-using OpenTK;
 using OpenTK.Mathematics;
 using Silk.NET.Input;
+using Easy2D.OpenGL;
 
 namespace RTCircles
 {

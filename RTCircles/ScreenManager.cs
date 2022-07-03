@@ -4,6 +4,7 @@ using Silk.NET.Input;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using Easy2D.OpenGL;
 
 namespace RTCircles
 {

@@ -2,7 +2,7 @@
 using Silk.NET.OpenGLES;
 using OpenTK.Mathematics;
 using System.Collections.Generic;
-using System;
+using Easy2D.OpenGL;
 
 namespace RTCircles
 {

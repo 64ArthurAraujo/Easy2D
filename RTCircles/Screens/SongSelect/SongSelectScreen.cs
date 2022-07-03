@@ -2,9 +2,7 @@
 using OpenTK.Mathematics;
 using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-using OsuParsers.Beatmaps;
+using Easy2D.OpenGL;
 using Easy2D.Game;
 using Silk.NET.Input;
 using Realms;

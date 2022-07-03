@@ -2,6 +2,7 @@
 using Easy2D.Game;
 using OpenTK.Mathematics;
 using System;
+using Easy2D.OpenGL;
 
 namespace RTCircles
 {

@@ -1,8 +1,7 @@
 ﻿using Silk.NET.OpenGLES;
 using System;
-using Easy2D.OpenGL;
 
-namespace Easy2D
+namespace Easy2D.OpenGL
 {
     public class FrameBuffer : GLObject
     {

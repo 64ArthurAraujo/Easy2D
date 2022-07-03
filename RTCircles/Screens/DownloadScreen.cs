@@ -5,7 +5,6 @@ using Silk.NET.Input;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
 namespace RTCircles
 {
