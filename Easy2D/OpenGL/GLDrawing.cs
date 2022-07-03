@@ -1,8 +1,7 @@
 ﻿using OpenTK.Mathematics;
 using Silk.NET.OpenGLES;
-using SixLabors.ImageSharp.PixelFormats;
 
-namespace Easy2D
+namespace Easy2D.OpenGL
 {
     public static class GLDrawing
     {
@@ -36,7 +35,7 @@ namespace Easy2D
             quadBuffer.UploadData(0, quad.Length, quad);
             quadVao.Bind();
 
-            GL.DrawArrays(PrimitiveType.Triangles, 0, 6);
+            GLController.DrawArrays(PrimitiveType.Triangles, 0, 6);
         }
     }
 }

@@ -1,41 +1,40 @@
 ﻿using Silk.NET.OpenGLES;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
-using Easy2D;
 using System.Runtime.CompilerServices;
 
-public static class GL
-{
-    public static Silk.NET.OpenGLES.GL Instance { get; private set; }
+namespace Easy2D.OpenGL;
 
-    public static string GLVendor { get; private set; }
-    public static string GLRenderer { get; private set; }
-    public static string GLShadingVersion { get; private set; }
-    public static string GLVersion { get; private set; }
-    public static string GLExtensions { get; private set; }
+// gl controller may not be the best name but works for now
+public static class GLController
+{
+    public static GL Instance { get; private set; }
+
+    public static string Vendor { get; private set; }
+    public static string Renderer { get; private set; }
+    public static string ShadingVersion { get; private set; }
+    public static string Version { get; private set; }
+    
+    public static string GLExtensions  { get; private set; }
 
     public static ulong DrawCalls { get; private set; }
 
     public static int MaxTextureSlots { get; private set; } = -1;
 
-    public unsafe static void SetGL(Silk.NET.OpenGLES.GL gl)
+    public unsafe static void SetGL(GL gl)
     {
         Instance = gl;
 
-        GLVendor = Marshal.PtrToStringAnsi(new IntPtr(Instance.GetString(StringName.Vendor)));
-        GLRenderer = Marshal.PtrToStringAnsi(new IntPtr(Instance.GetString(StringName.Renderer)));
-        GLShadingVersion = Marshal.PtrToStringAnsi(new IntPtr(Instance.GetString(StringName.ShadingLanguageVersion)));
-        GLVersion = Marshal.PtrToStringAnsi(new IntPtr(Instance.GetString(StringName.Version)));
+        Vendor = Marshal.PtrToStringAnsi(new IntPtr(Instance.GetString(StringName.Vendor)));
+        Renderer = Marshal.PtrToStringAnsi(new IntPtr(Instance.GetString(StringName.Renderer)));
+        ShadingVersion = Marshal.PtrToStringAnsi(new IntPtr(Instance.GetString(StringName.ShadingLanguageVersion)));
+        Version = Marshal.PtrToStringAnsi(new IntPtr(Instance.GetString(StringName.Version)));
         GLExtensions = Marshal.PtrToStringAnsi(new IntPtr(Instance.GetString(StringName.Extensions)));
 
-        Utils.Log($"Vendor: {GLVendor}", LogLevel.Important);
-        Utils.Log($"Renderer: {GLRenderer}", LogLevel.Important);
-        Utils.Log($"Version: {GLVersion}", LogLevel.Important);
-        Utils.Log($"GLSL Version: {GLShadingVersion}", LogLevel.Important);
+        Utils.Log($"Vendor: {Vendor}", LogLevel.Important);
+        Utils.Log($"Renderer: {Renderer}", LogLevel.Important);
+        Utils.Log($"Version: {Version}", LogLevel.Important);
+        Utils.Log($"GLSL Version: {ShadingVersion}", LogLevel.Important);
 
         Instance.GetInteger(GetPName.MaxTextureImageUnits, out int slotCount);
         MaxTextureSlots = slotCount;
