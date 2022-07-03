@@ -5,6 +5,7 @@ using System.IO;
 
 namespace Easy2D
 {
+    // The utils namespace may not be the best place for this class but idk
     public class Font
     {
         public static readonly Font DefaultFont = new Font(Utils.GetInternalResource("Fonts.Default.fnt"), Utils.GetInternalResource("Fonts.Default.png"));
