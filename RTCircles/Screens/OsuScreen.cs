@@ -1,15 +1,10 @@
-﻿using Easy2D;
-using Easy2D.Game;
-using OpenTK.Mathematics;
-using OsuParsers.Beatmaps;
-using OsuParsers.Beatmaps.Objects;
-using OsuParsers.Decoders;
+﻿using OpenTK.Mathematics;
 using Silk.NET.Input;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
+using Easy2D;
+using Easy2D.Game;
+using Easy2D.OpenGL;
 
 namespace RTCircles
 {
@@ -432,13 +427,13 @@ namespace RTCircles
             if (DrawableSlider.SliderOnScreen && !GlobalOptions.UseFastSliders.Value)
             {
                 var prevViewport = Viewport.CurrentViewport;
-                GL.Instance.Enable(Silk.NET.OpenGLES.EnableCap.DepthTest);
+                GLController.Instance.Enable(Silk.NET.OpenGLES.EnableCap.DepthTest);
                 for (int i = 0; i < children.Count; i++)
                 {
                     if (children[i] is DrawableSlider slider)
                         slider.SliderPath.OffscreenRender();
                 }
-                GL.Instance.Disable(Silk.NET.OpenGLES.EnableCap.DepthTest);
+                GLController.Instance.Disable(Silk.NET.OpenGLES.EnableCap.DepthTest);
                 FrameBuffer.BindDefault();
                 Viewport.SetViewport(prevViewport);
             }

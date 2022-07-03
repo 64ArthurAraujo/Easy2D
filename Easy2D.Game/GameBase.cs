@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime;
 using System.Runtime.CompilerServices;
@@ -8,6 +7,7 @@ using Silk.NET.Maths;
 using Silk.NET.OpenGLES;
 using Silk.NET.SDL;
 using Silk.NET.Windowing;
+using Easy2D.OpenGL;
 
 namespace Easy2D.Game
 {
@@ -183,7 +183,7 @@ namespace Easy2D.Game
             OnRender();
             GPUSched.Instance.RunPendingTasks();
             View.SwapBuffers();
-            GL.Instance.Clear(ClearBufferMask);
+            GLController.Instance.Clear(ClearBufferMask);
         }
 
         private double elapsedFPS;
@@ -215,14 +215,14 @@ namespace Easy2D.Game
             setupSDL();
 
             Input.SetContext(View.CreateInput());
-            GL.SetGL(View.CreateOpenGLES());
+            GLController.SetGL(View.CreateOpenGLES());
             Sound.Init(View.Handle);
 
-            GL.Instance.Enable(EnableCap.Texture2D);
-            GL.Instance.Enable(EnableCap.ScissorTest);
-            GL.Instance.Enable(EnableCap.Blend);
+            GLController.Instance.Enable(EnableCap.Texture2D);
+            GLController.Instance.Enable(EnableCap.ScissorTest);
+            GLController.Instance.Enable(EnableCap.Blend);
 
-            GL.Instance.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
+            GLController.Instance.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
 
             OnLoad();
             OnResize(View.Size.X, View.Size.Y);

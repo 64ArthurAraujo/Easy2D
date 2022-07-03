@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using Easy2D.OpenGL;
 
 namespace Easy2D
 {
@@ -35,12 +36,12 @@ namespace Easy2D
 
         protected override void bind(int? slot)
         {
-            GL.Instance.BindVertexArray(Handle);
+            GLController.Instance.BindVertexArray(Handle);
         }
 
         protected override void delete()
         {
-            GL.Instance.DeleteVertexArray(Handle);
+            GLController.Instance.DeleteVertexArray(Handle);
             Handle = uint.MaxValue;
         }
 
@@ -49,18 +50,18 @@ namespace Easy2D
         {
             Utils.Log($"VertexAttribute[{vertexAttribIndex}]\n\tTYPE: {type} Count: {componentCount} SIZE: {size} OFFSET: {offset} DIVISOR: {divisor} STRIDE: {stride}", LogLevel.Info);
 
-            GL.Instance.EnableVertexAttribArray((uint)vertexAttribIndex);
+            GLController.Instance.EnableVertexAttribArray((uint)vertexAttribIndex);
             unsafe
             {
-                GL.Instance.VertexAttribPointer((uint)vertexAttribIndex, componentCount, type, normalized, (uint)stride, (void*)offset);
-                GL.Instance.VertexAttribDivisor((uint)vertexAttribIndex, (uint)divisor);
+                GLController.Instance.VertexAttribPointer((uint)vertexAttribIndex, componentCount, type, normalized, (uint)stride, (void*)offset);
+                GLController.Instance.VertexAttribDivisor((uint)vertexAttribIndex, (uint)divisor);
             }
             vertexAttribIndex++;
         }
 
         protected override void initialize(int? slot)
         {
-            Handle = GL.Instance.GenVertexArray();
+            Handle = GLController.Instance.GenVertexArray();
             bind(null);
 
             Utils.Log($"Initialising VertexArray[{Handle}]<{typeof(T)}> {sizeOfBaseType} bytes", LogLevel.Info);

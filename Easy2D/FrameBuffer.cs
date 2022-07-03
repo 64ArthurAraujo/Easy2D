@@ -1,5 +1,6 @@
 ﻿using Silk.NET.OpenGLES;
 using System;
+using Easy2D.OpenGL;
 
 namespace Easy2D
 {
@@ -61,7 +62,6 @@ namespace Easy2D
         /// </summary>
         public void Unbind()
         {
-            //GL.Instance.InvalidateFramebuffer(FramebufferTarget.Framebuffer, new ReadOnlySpan<GLEnum>(new[] { (GLEnum)Attachment }));
             BindDefault();
         }
 
@@ -70,33 +70,33 @@ namespace Easy2D
             if (DefaultFrameBuffer.TryGetTarget(out FrameBuffer defaultFrameBuffer) && !forceUseScreen)
                 defaultFrameBuffer.Bind();
             else
-                GL.Instance.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
+                GLController.Instance.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
         }
 
         protected override void initialize(int? slot)
         {
-            Handle = GL.Instance.GenFramebuffer();
+            Handle = GLController.Instance.GenFramebuffer();
 
             bind(null);
 
             Texture.Bind(0);
 
-            GL.Instance.FramebufferTexture2D(FramebufferTarget.Framebuffer, Attachment, TextureTarget.Texture2D, Texture.Handle, 0);
+            GLController.Instance.FramebufferTexture2D(FramebufferTarget.Framebuffer, Attachment, TextureTarget.Texture2D, Texture.Handle, 0);
 
-            Status = GL.Instance.CheckFramebufferStatus(FramebufferTarget.Framebuffer);
+            Status = GLController.Instance.CheckFramebufferStatus(FramebufferTarget.Framebuffer);
 
             Utils.Log($"Created framebuffer {Handle} : {Status}", Status == GLEnum.FramebufferComplete ? LogLevel.Debug : LogLevel.Error);
         }
 
         protected override void bind(int? slot)
         {
-            GL.Instance.BindFramebuffer(FramebufferTarget.Framebuffer, Handle);
+            GLController.Instance.BindFramebuffer(FramebufferTarget.Framebuffer, Handle);
         }
 
         protected override void delete()
         {
             //Native symbol not found? Multithreading bug
-            GL.Instance.DeleteFramebuffer(Handle);
+            GLController.Instance.DeleteFramebuffer(Handle);
             Handle = uint.MaxValue;
             Texture.Delete();
         }

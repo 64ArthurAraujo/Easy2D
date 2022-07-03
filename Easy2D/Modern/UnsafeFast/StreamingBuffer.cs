@@ -1,7 +1,6 @@
 ﻿using Silk.NET.OpenGLES;
 using System;
-using System.Collections.Generic;
-using System.Text;
+using Easy2D.OpenGL;
 
 namespace Easy2D
 {
@@ -18,7 +17,7 @@ namespace Easy2D
         static StreamingBuffer()
         {
             if (extBufferStorage is null)
-                GL.Instance.TryGetExtension<Silk.NET.OpenGLES.Extensions.EXT.ExtBufferStorage>(out extBufferStorage);
+                GLController.Instance.TryGetExtension<Silk.NET.OpenGLES.Extensions.EXT.ExtBufferStorage>(out extBufferStorage);
         }
 
         private static readonly MapBufferAccessMask mapBufferAccessMask = MapBufferAccessMask.MapWriteBit | MapBufferAccessMask.MapPersistentBit | MapBufferAccessMask.MapCoherentBit;
@@ -44,26 +43,26 @@ namespace Easy2D
 
         protected override void bind(int? slot)
         {
-            GL.Instance.BindBuffer(bufferTarget, Handle);
+            GLController.Instance.BindBuffer(bufferTarget, Handle);
         }
 
         protected override void delete()
         {
             Pointer = null;
 
-            GL.Instance.DeleteBuffer(Handle);
+            GLController.Instance.DeleteBuffer(Handle);
             Handle = uint.MaxValue;
         }
 
         protected override void initialize(int? slot)
         {
-            Handle = GL.Instance.GenBuffer();
+            Handle = GLController.Instance.GenBuffer();
 
             bind(null);
 
             extBufferStorage.BufferStorage((BufferStorageTarget)bufferTarget, SizeInBytes, null, bufferStorageMask);
 
-            Pointer = (T*)GL.Instance.MapBufferRange(bufferTarget, 0, SizeInBytes, mapBufferAccessMask);
+            Pointer = (T*)GLController.Instance.MapBufferRange(bufferTarget, 0, SizeInBytes, mapBufferAccessMask);
         }
     }
 }

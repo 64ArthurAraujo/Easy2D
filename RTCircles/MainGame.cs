@@ -1,14 +1,14 @@
-﻿using Easy2D;
-using Easy2D.Game;
-using OpenTK.Mathematics;
+﻿using OpenTK.Mathematics;
 using Silk.NET.Input;
-using Silk.NET.SDL;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
 using System.Runtime.InteropServices;
 using System.Text;
+using Easy2D;
+using Easy2D.Game;
+using Easy2D.OpenGL;
 
 namespace RTCircles
 {
@@ -245,7 +245,7 @@ namespace RTCircles
 
                 StringBuilder sb = new StringBuilder();
 
-                string text = $"Mem: {mem:F0}mb DrawCalls: {GL.DrawCalls} FPS: {FPS}/{ms:F2}ms UPS: {UPS}";
+                string text = $"Mem: {mem:F0}mb DrawCalls: {GLController.DrawCalls} FPS: {FPS}/{ms:F2}ms UPS: {UPS}";
 
                 sb.Append(text);
 
@@ -260,12 +260,12 @@ namespace RTCircles
 
                 if (new Rectangle(trueHoverPos.Value, trueHoverSize.Value).IntersectsWith(Input.MousePosition))
                 {
-                    text+= $"\n{GL.GLVersion}\n" +
-                        $"GPU: {GL.GLRenderer}\n" +
+                    text+= $"\n{GLController.Version}\n" +
+                        $"GPU: {GLController.Renderer}\n" +
                         $"Vertices: {Utils.ToKMB(g.VerticesDrawn)}\n" +
                         $"Indices: {Utils.ToKMB(g.IndicesDrawn)}\n" +
                         $"Tris: {Utils.ToKMB(g.TrianglesDrawn)}\n" +
-                        $"Textures: {Easy2D.Texture.TextureCount} DrawCall_Max: {GL.MaxTextureSlots} \n" +
+                        $"Textures: {Easy2D.Texture.TextureCount} DrawCall_Max: {GLController.MaxTextureSlots} \n" +
                         $"Framework: {RuntimeInformation.FrameworkDescription} {RuntimeInformation.ProcessArchitecture}\n" +
                         $"Audio Latency: {Sound.DeviceLatency}ms\n" +
                         $"OS: {RuntimeInformation.OSDescription}\n" +
@@ -279,7 +279,7 @@ namespace RTCircles
                     trueHoverSize = null;
                 }
 
-                GL.ResetStatistics();
+                GLController.ResetStatistics();
                 g.ResetStatistics();
 
                 Vector2 textSize = ResultScreen.Font.MessureString(text, scale);

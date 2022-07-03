@@ -1,9 +1,4 @@
 ﻿using OpenTK.Mathematics;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Easy2D
 {
@@ -29,6 +24,7 @@ namespace Easy2D
         public static Vector4 Tint(Vector4 color, float maxValue)
         {
             float ratio = 1.0f;
+            
             if(color.X > color.Y && color.X > color.Z)
                 ratio = maxValue / color.X;
             else if (color.Y > color.X && color.Y > color.Z)

@@ -1,11 +1,6 @@
 ﻿using OpenTK.Mathematics;
 using Silk.NET.OpenGLES;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Easy2D.OpenGL;
 
 namespace Easy2D
 {
@@ -64,7 +59,7 @@ namespace Easy2D
             MainFrameBuffer.EnsureSize(windowSize.X, windowSize.Y);
             MainFrameBuffer.Bind();
             Viewport.SetViewport(0, 0, MainFrameBuffer.Width, MainFrameBuffer.Height);
-            GL.Instance.Clear(ClearBufferMask.ColorBufferBit);
+            GLController.Instance.Clear(ClearBufferMask.ColorBufferBit);
         }
 
         private static void blitFramebuffer(FrameBuffer src, FrameBuffer dst)

@@ -1,5 +1,6 @@
 ﻿using Silk.NET.OpenGLES;
 using System;
+using Easy2D.OpenGL;
 
 namespace Easy2D
 {
@@ -220,7 +221,7 @@ namespace Easy2D
 
             unsafe
             {
-                GL.DrawElements(PrimitiveType.Triangles, (uint)IndexRenderCount, DrawElementsType.UnsignedInt, null);
+                GLController.DrawElements(PrimitiveType.Triangles, (uint)IndexRenderCount, DrawElementsType.UnsignedInt, null);
             }
 
             if(AutoClearOnRender)
@@ -235,7 +236,7 @@ namespace Easy2D
         {
             unsafe
             {
-                GL.DrawElements(PrimitiveType.Triangles, (uint)IndexRenderCount, DrawElementsType.UnsignedInt, null);
+                GLController.DrawElements(PrimitiveType.Triangles, (uint)IndexRenderCount, DrawElementsType.UnsignedInt, null);
             }
         }
 

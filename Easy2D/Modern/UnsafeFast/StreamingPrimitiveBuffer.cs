@@ -1,7 +1,6 @@
 ﻿using Silk.NET.OpenGLES;
 using System;
-using System.Collections.Generic;
-using System.Text;
+using Easy2D.OpenGL;
 
 namespace Easy2D
 {
@@ -44,33 +43,6 @@ namespace Easy2D
 
             VertexCapacity = vertexCount;
             IndexCapacity = indexCount;
-
-            //Buffering double buffering buffers? XD
-            //Buffer boofa båffa buffer these nuts
-
-            /*
-            ibo1 = new StreamingBuffer<uint>(BufferTargetARB.ElementArrayBuffer, indexCount);
-            ibo2 = new StreamingBuffer<uint>(BufferTargetARB.ElementArrayBuffer, indexCount);
-
-            vao1 = new VertexArray<T>();
-            vao2 = new VertexArray<T>();
-
-            vbo1 = new StreamingBuffer<T>(BufferTargetARB.ArrayBuffer, vertexCount);
-            vbo2 = new StreamingBuffer<T>(BufferTargetARB.ArrayBuffer, vertexCount);
-
-            vbo1.Bind();
-            vao1.Bind();
-
-            vbo2.Bind();
-            vao2.Bind();
-
-            ibo1.Bind();
-            ibo2.Bind();
-
-            vbo = vbo1;
-            ibo = ibo1;
-            vao = vao1;
-            */
 
             vbos = new StreamingBuffer<T>[BUFFER_COUNT];
             ibos = new StreamingBuffer<uint>[BUFFER_COUNT];
@@ -218,9 +190,8 @@ namespace Easy2D
 
             ibo.Bind();
 
-            //????? Finish because async transfer?
-            GL.DrawElements(PrimitiveType.Triangles, IndexRenderCount, DrawElementsType.UnsignedInt, null);
-            //GL.Instance.Finish();
+            GLController.DrawElements(PrimitiveType.Triangles, IndexRenderCount, DrawElementsType.UnsignedInt, null);
+
             IndexRenderCount = 0;
             VertexRenderCount = 0;
 

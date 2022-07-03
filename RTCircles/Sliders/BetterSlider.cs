@@ -3,7 +3,7 @@ using OpenTK.Mathematics;
 using Silk.NET.OpenGLES;
 using System;
 using System.Collections.Generic;
-using System.IO;
+using Easy2D.OpenGL;
 
 namespace RTCircles
 {
@@ -228,7 +228,7 @@ namespace RTCircles
 
             frameBuffer.Bind();
             Viewport.SetViewport(0, 0, frameBuffer.Width, frameBuffer.Height);
-            GL.Instance.Clear(ClearBufferMask.DepthBufferBit);
+            GLController.Instance.Clear(ClearBufferMask.DepthBufferBit);
             sliderShader.Bind();
             sliderShader.SetMatrix("u_Projection", projectionMatrix);
             drawSlider();

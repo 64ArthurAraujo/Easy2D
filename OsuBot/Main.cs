@@ -1,13 +1,11 @@
 ﻿using Easy2D;
-using Easy2D.Game;
 using Discord;
 using Discord.WebSocket;
 using System.Collections.Concurrent;
 using OpenTK.Mathematics;
-using SixLabors.ImageSharp.PixelFormats;
-using System.Runtime.InteropServices;
 using FFMediaToolkit;
 using FFMediaToolkit.Encoding;
+using Easy2D.OpenGL;
 
 namespace OsuBot
 {
@@ -108,7 +106,7 @@ namespace OsuBot
             frameBuffer.EnsureSize(OUTPUT_WIDTH, OUTPUT_HEIGHT);
             frameBuffer.Bind();
             Viewport.SetViewport(0, 0, OUTPUT_WIDTH, OUTPUT_HEIGHT);
-            GL.Instance.ReadBuffer(Silk.NET.OpenGLES.ReadBufferMode.ColorAttachment0);
+            GLController.Instance.ReadBuffer(Silk.NET.OpenGLES.ReadBufferMode.ColorAttachment0);
 
             //Obviously you have to provide your own path here
             FFmpegLoader.FFmpegPath = @"C:\Users\user\Desktop\TempOsuBot\ffmpeg";
@@ -342,7 +340,7 @@ namespace OsuBot
                     for (int i = 0; i < FRAMES_TO_RENDER; i++)
                     {
                         //Clear the image
-                        GL.Instance.Clear(Silk.NET.OpenGLES.ClearBufferMask.ColorBufferBit);
+                        GLController.Instance.Clear(Silk.NET.OpenGLES.ClearBufferMask.ColorBufferBit);
 
                         //Render the osu gameplay
                         renderTick(i, message);
@@ -371,7 +369,7 @@ namespace OsuBot
                             fixed (void* framePtr = pixelBuffer)
                             {
                                 //Read the pixels into the pixelBuffer
-                                GL.Instance.ReadPixels(0, 0, (uint)OUTPUT_WIDTH, (uint)OUTPUT_HEIGHT,
+                                GLController.Instance.ReadPixels(0, 0, (uint)OUTPUT_WIDTH, (uint)OUTPUT_HEIGHT,
                                     Silk.NET.OpenGLES.PixelFormat.Rgb, Silk.NET.OpenGLES.PixelType.UnsignedByte, framePtr);
                             }
 

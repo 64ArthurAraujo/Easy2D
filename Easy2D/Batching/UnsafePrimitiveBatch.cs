@@ -1,6 +1,7 @@
 ﻿using Silk.NET.OpenGLES;
 using System;
 using System.Runtime.InteropServices;
+using Easy2D.OpenGL;
 
 namespace Easy2D
 {
@@ -169,7 +170,7 @@ namespace Easy2D
             //Copy cpu indices to gpu
             indexBuffer.UploadData(0, IndexRenderCount, indexPool);
 
-            GL.DrawElements(PrimitiveType.Triangles, IndexRenderCount, DrawElementsType.UnsignedInt, null);
+            GLController.DrawElements(PrimitiveType.Triangles, IndexRenderCount, DrawElementsType.UnsignedInt, null);
 
             VertexRenderCount = 0;
             IndexRenderCount = 0;

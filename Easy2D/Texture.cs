@@ -6,6 +6,7 @@ using OpenTK.Mathematics;
 using Silk.NET.OpenGLES;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
+using Easy2D.OpenGL;
 
 namespace Easy2D
 {
@@ -93,31 +94,31 @@ namespace Easy2D
             if (!status)
                 throw new Exception("Couldnt get pixel span?");
 
-            Handle = GL.Instance.GenTexture();
+            Handle = GLController.Instance.GenTexture();
 
             bind(null);
 
-            GL.Instance.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (float)MinFilter);
-            GL.Instance.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (float)MagFilter);
+            GLController.Instance.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (float)MinFilter);
+            GLController.Instance.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (float)MagFilter);
 
-            GL.Instance.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.ClampToEdge);
-            GL.Instance.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.ClampToEdge);
+            GLController.Instance.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.ClampToEdge);
+            GLController.Instance.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.ClampToEdge);
 
             unsafe
             {
                 fixed (Rgba32* imageDataPtr = imageData)
                 {
-                    //GL.Instance.CompressedTexImage2D(TextureTarget.Texture2D, 0, InternalFormat.CompressedRgba, (uint)Width, (uint)Height, 0, (uint)(imageData.Length * sizeof(Rgba32)), imageDataPtr);
-                    GL.Instance.TexImage2D(TextureTarget.Texture2D, 0, InternalFormat, (uint)Width, (uint)Height, 0, PixelFormat, PixelType, imageDataPtr);
+                    //GLController.Instance.CompressedTexImage2D(TextureTarget.Texture2D, 0, InternalFormat.CompressedRgba, (uint)Width, (uint)Height, 0, (uint)(imageData.Length * sizeof(Rgba32)), imageDataPtr);
+                    GLController.Instance.TexImage2D(TextureTarget.Texture2D, 0, InternalFormat, (uint)Width, (uint)Height, 0, PixelFormat, PixelType, imageDataPtr);
                 }
             }
 
             if (genMips)
             {
-                GL.Instance.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (float)MipmapFilter);
+                GLController.Instance.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (float)MipmapFilter);
 
                 //Gen mipmap
-                GL.Instance.GenerateMipmap(TextureTarget.Texture2D);
+                GLController.Instance.GenerateMipmap(TextureTarget.Texture2D);
             }
 
             TextureCount++;
@@ -142,7 +143,7 @@ namespace Easy2D
             {
                 fixed (T* p = pixels)
                 {
-                    GL.Instance.TexSubImage2D(TextureTarget.Texture2D, 0, x, y, (uint)width, (uint)height, PixelFormat, PixelType, p);
+                    GLController.Instance.TexSubImage2D(TextureTarget.Texture2D, 0, x, y, (uint)width, (uint)height, PixelFormat, PixelType, p);
                 }
             }
         }
@@ -160,7 +161,7 @@ namespace Easy2D
                 Bind();
                 unsafe
                 {
-                    GL.Instance.TexImage2D(TextureTarget.Texture2D, 0, InternalFormat, (uint)width, (uint)height, 0, PixelFormat, PixelType, null);
+                    GLController.Instance.TexImage2D(TextureTarget.Texture2D, 0, InternalFormat, (uint)width, (uint)height, 0, PixelFormat, PixelType, null);
                 }
             }
         }
@@ -212,17 +213,17 @@ namespace Easy2D
             {
                 fixed (Rgba32* imageDataPtr = imageData)
                 {
-                    //GL.Instance.CompressedTexImage2D(TextureTarget.Texture2D, 0, InternalFormat.CompressedRgba, (uint)Width, (uint)Height, 0, (uint)(imageData.Length * sizeof(Rgba32)), imageDataPtr);
-                    GL.Instance.TexImage2D(TextureTarget.Texture2D, 0, InternalFormat, (uint)Width, (uint)Height, 0, PixelFormat, PixelType, imageDataPtr);
+                    //GLController.Instance.CompressedTexImage2D(TextureTarget.Texture2D, 0, InternalFormat.CompressedRgba, (uint)Width, (uint)Height, 0, (uint)(imageData.Length * sizeof(Rgba32)), imageDataPtr);
+                    GLController.Instance.TexImage2D(TextureTarget.Texture2D, 0, InternalFormat, (uint)Width, (uint)Height, 0, PixelFormat, PixelType, imageDataPtr);
                 }
             }
 
             if (GenerateMipmaps)
             {
-                GL.Instance.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (float)TextureMinFilter.LinearMipmapNearest);
+                GLController.Instance.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (float)TextureMinFilter.LinearMipmapNearest);
 
                 //Gen mipmap
-                GL.Instance.GenerateMipmap(TextureTarget.Texture2D);
+                GLController.Instance.GenerateMipmap(TextureTarget.Texture2D);
             }
 
             Utils.Log($"Loaded texture [{Handle}] {Width}x{Height} {GetMemoryUsage()} mb  Mipmaps: {GenerateMipmaps} Async: {UseAsyncLoading} Stream: {stream is null}", LogLevel.Debug);
@@ -239,15 +240,15 @@ namespace Easy2D
 
         protected override void initialize(int? slot)
         {
-            Handle = GL.Instance.GenTexture();
+            Handle = GLController.Instance.GenTexture();
 
             bind(slot);
 
-            GL.Instance.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (float)TextureMinFilter.Linear);
-            GL.Instance.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (float)TextureMagFilter.Linear);
+            GLController.Instance.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (float)TextureMinFilter.Linear);
+            GLController.Instance.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (float)TextureMagFilter.Linear);
 
-            GL.Instance.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.ClampToEdge);
-            GL.Instance.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.ClampToEdge);
+            GLController.Instance.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.ClampToEdge);
+            GLController.Instance.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.ClampToEdge);
 
             //If stream is null just assume we're trying to create a texture without data, else load texture from the stream
             if (stream is null)
@@ -258,7 +259,7 @@ namespace Easy2D
 
                 unsafe
                 {
-                    GL.Instance.TexImage2D(TextureTarget.Texture2D, 0, InternalFormat, (uint)Width, (uint)Height, 0, PixelFormat, PixelType, null);
+                    GLController.Instance.TexImage2D(TextureTarget.Texture2D, 0, InternalFormat, (uint)Width, (uint)Height, 0, PixelFormat, PixelType, null);
                 }
                 Utils.Log($"Created texture: {Handle} {Width}x{Height} {GetMemoryUsage()} mb", LogLevel.Debug);
             }
@@ -274,14 +275,14 @@ namespace Easy2D
         protected override void bind(int? slot)
         {
             if (slot.HasValue)
-                GL.Instance.ActiveTexture(TextureUnit.Texture0 + slot.Value);
+                GLController.Instance.ActiveTexture(TextureUnit.Texture0 + slot.Value);
 
-            GL.Instance.BindTexture(TextureTarget.Texture2D, Handle);
+            GLController.Instance.BindTexture(TextureTarget.Texture2D, Handle);
         }
 
         protected override void delete()
         {
-            GL.Instance.DeleteTexture(Handle);
+            GLController.Instance.DeleteTexture(Handle);
             Handle = uint.MaxValue;
             TextureCount--;
 

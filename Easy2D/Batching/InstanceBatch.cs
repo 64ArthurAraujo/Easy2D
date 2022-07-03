@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using Easy2D.OpenGL;
 
 namespace Easy2D
 {
@@ -64,11 +65,11 @@ namespace Easy2D
         {
             Utils.Log($"VertexAttribute[{vertexAttribIndex}]  Count: {componentCount} type: {type} offset: {offset} stride: {stride} divisor: {divisor}", LogLevel.Info);
 
-            GL.Instance.EnableVertexAttribArray((uint)vertexAttribIndex);
+            GLController.Instance.EnableVertexAttribArray((uint)vertexAttribIndex);
             unsafe
             {
-                GL.Instance.VertexAttribPointer((uint)vertexAttribIndex, componentCount, type, normalized, (uint)stride, (void*)offset);
-                GL.Instance.VertexAttribDivisor((uint)vertexAttribIndex, (uint)divisor);
+                GLController.Instance.VertexAttribPointer((uint)vertexAttribIndex, componentCount, type, normalized, (uint)stride, (void*)offset);
+                GLController.Instance.VertexAttribDivisor((uint)vertexAttribIndex, (uint)divisor);
             }
             vertexAttribIndex++;
         }
@@ -99,8 +100,8 @@ namespace Easy2D
 
         private void setupVAO()
         {
-            vao = GL.Instance.GenVertexArray();
-            GL.Instance.BindVertexArray(vao);
+            vao = GLController.Instance.GenVertexArray();
+            GLController.Instance.BindVertexArray(vao);
 
             modelVbo.Bind();
             scanType<TBaseVertex>();
@@ -123,13 +124,13 @@ namespace Easy2D
 
         public void Draw(int instanceCount)
         {
-            GL.Instance.BindVertexArray(vao);
+            GLController.Instance.BindVertexArray(vao);
             if (modelIbo is null)
-                GL.Instance.DrawArraysInstanced(PrimitiveType, 0, (uint)elementCount, (uint)instanceCount);
+                GLController.Instance.DrawArraysInstanced(PrimitiveType, 0, (uint)elementCount, (uint)instanceCount);
             else 
                 unsafe
                 {
-                    GL.Instance.DrawElementsInstanced(PrimitiveType, (uint)elementCount, DrawElementsType.UnsignedInt, null, (uint)instanceCount);
+                    GLController.Instance.DrawElementsInstanced(PrimitiveType, (uint)elementCount, DrawElementsType.UnsignedInt, null, (uint)instanceCount);
                 }
         }
     }

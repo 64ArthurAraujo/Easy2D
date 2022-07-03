@@ -1,5 +1,6 @@
 ﻿using OpenTK.Mathematics;
 using Silk.NET.OpenGLES;
+using Easy2D.OpenGL;
 
 namespace Easy2D
 {
@@ -21,24 +22,24 @@ namespace Easy2D
 
             var startViewport = Viewport.CurrentViewport;
 
-            int w = dest.Width;
-            int h = dest.Height;
+            int width = dest.Width;
+            int height = dest.Height;
 
-            Vector2 quadSize = new Vector2(w, h);
+            Vector2 quadSize = new Vector2(width, height);
 
             Vector2 horizontalBlur = new Vector2(radius, 0);
             Vector2 verticalBlur = new Vector2(0, radius);
 
-            destPong.EnsureSize(w, h);
+            destPong.EnsureSize(width, height);
 
             dest.Bind();
 
-            Viewport.SetViewport(0, 0, w, h);
+            Viewport.SetViewport(0, 0, width, height);
 
             texture.Bind(0);
 
             blurShader.Bind();
-            blurShader.SetMatrix("u_Projection", Matrix4.CreateOrthographicOffCenter(0, w, h, 0, -1, 1));
+            blurShader.SetMatrix("u_Projection", Matrix4.CreateOrthographicOffCenter(0, width, height, 0, -1, 1));
             blurShader.SetInt("u_SrcTexture", 0);
 
             blurShader.SetVector("u_Direction", horizontalBlur);
@@ -55,7 +56,7 @@ namespace Easy2D
                 blurDirection = blurDirection == horizontalBlur ? verticalBlur : horizontalBlur;
 
                 writeBuffer.Bind();
-                Viewport.SetViewport(0, 0, w, h);
+                Viewport.SetViewport(0, 0, width, height);
 
                 readBuffer.Texture.Bind(0);
 

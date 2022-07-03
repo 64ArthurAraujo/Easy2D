@@ -1,6 +1,7 @@
 ﻿using Silk.NET.OpenGLES;
 using System;
 using System.Runtime.InteropServices;
+using Easy2D.OpenGL;
 
 namespace Easy2D
 {
@@ -51,7 +52,7 @@ namespace Easy2D
 
             unsafe
             {
-                GL.Instance.BufferData(bufferType, sizeInBytes, null, bufferUsage);
+                GLController.Instance.BufferData(bufferType, sizeInBytes, null, bufferUsage);
             }
 
             Utils.Log($"Initialised {bufferType}<{typeof(T)}> with a capacity of {capacity} elements which is {GetMemoryUsage():F2} MB / {sizeOfTypeInBytes} bytes per element", LogLevel.Info);
@@ -87,25 +88,25 @@ namespace Easy2D
             uint sizeInBytes = objectCount * sizeOfTypeInBytes;
             uint offsetInBytes = startIndex * sizeOfTypeInBytes;
 
-            GL.Instance.BufferSubData(bufferType, (IntPtr)offsetInBytes, sizeInBytes, data);
+            GLController.Instance.BufferSubData(bufferType, (IntPtr)offsetInBytes, sizeInBytes, data);
 
         }
 
         protected override void initialize(int? slot)
         {
-            Handle = GL.Instance.GenBuffer();
+            Handle = GLController.Instance.GenBuffer();
 
             Resize(Capacity);
         }
 
         protected override void bind(int? slot)
         {
-            GL.Instance.BindBuffer(bufferType, Handle);
+            GLController.Instance.BindBuffer(bufferType, Handle);
         }
 
         protected override void delete()
         {
-            GL.Instance.DeleteBuffer(Handle);
+            GLController.Instance.DeleteBuffer(Handle);
             Handle = uint.MaxValue;
         }
     }

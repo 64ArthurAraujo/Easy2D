@@ -2,9 +2,8 @@
 using OpenTK.Mathematics;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.IO;
+using Easy2D.OpenGL;
 
 namespace Easy2D
 {
@@ -21,13 +20,8 @@ namespace Easy2D
 
         static Graphics()
         {
-            MaxTextureSlots = GL.MaxTextureSlots;
-            /*
-            if (MaxTextureSlots == 0)
-                MaxTextureSlots = 8;
+            MaxTextureSlots = GLController.MaxTextureSlots;
 
-            MaxTextureSlots = 16;
-            */
             Utils.Log($"Max Available Texture Slots: {MaxTextureSlots}", LogLevel.Important);
 
             textureSlots = new int[MaxTextureSlots];
@@ -598,7 +592,7 @@ namespace Easy2D
 
             Viewport.SetViewport(0, 0, frameBuffer.Width, frameBuffer.Height);
 
-            GL.Instance.Clear(ClearBufferMask.ColorBufferBit);
+            GLController.Instance.Clear(ClearBufferMask.ColorBufferBit);
 
             foreach (var action in drawActions)
             {

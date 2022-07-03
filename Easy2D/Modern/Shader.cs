@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using Silk.NET.OpenGLES;
 using OpenTK.Mathematics;
+using Easy2D.OpenGL;
 
 namespace Easy2D
 {
@@ -50,51 +49,51 @@ namespace Easy2D
             {
                 string shaderText = readShaderFromFile(shaderInfo.Value, shaderInfo.Key);
 
-                uint shaderID = GL.Instance.CreateShader(shaderInfo.Key);
+                uint shaderID = GLController.Instance.CreateShader(shaderInfo.Key);
                 if (shaderID == 0)
                 {
                     Utils.Log($"Error creating {shaderInfo.Key}. Could not generate shader buffer.", LogLevel.Error);
                 }
                 
-                GL.Instance.ShaderSource(shaderID, shaderText);
-                GL.Instance.CompileShader(shaderID);
+                GLController.Instance.ShaderSource(shaderID, shaderText);
+                GLController.Instance.CompileShader(shaderID);
 
                 int compileStatus;
-                GL.Instance.GetShader(shaderID, ShaderParameterName.CompileStatus, out compileStatus);
+                GLController.Instance.GetShader(shaderID, ShaderParameterName.CompileStatus, out compileStatus);
                 if (compileStatus == 0)
                 {
                     Utils.Log($"Error compiling {shaderInfo.Key}. Could not compile shader.", LogLevel.Error);
-                    Utils.Log(GL.Instance.GetShaderInfoLog(shaderID), LogLevel.Warning);
+                    Utils.Log(GLController.Instance.GetShaderInfoLog(shaderID), LogLevel.Warning);
                 }
 
-                GL.Instance.AttachShader(Handle, shaderID);
+                GLController.Instance.AttachShader(Handle, shaderID);
             }
 
             //Link shader files
-            GL.Instance.LinkProgram(Handle);
+            GLController.Instance.LinkProgram(Handle);
             int linkStatus;
-            GL.Instance.GetProgram(Handle, ProgramPropertyARB.LinkStatus, out linkStatus);
+            GLController.Instance.GetProgram(Handle, ProgramPropertyARB.LinkStatus, out linkStatus);
             if (linkStatus == 0)
             {
                 Utils.Log("Error linking shader program: Could not link shader program!", LogLevel.Error);
-                Utils.Log(GL.Instance.GetProgramInfoLog(Handle), LogLevel.Warning);
+                Utils.Log(GLController.Instance.GetProgramInfoLog(Handle), LogLevel.Warning);
             }
 
-            GL.Instance.ValidateProgram(Handle);
+            GLController.Instance.ValidateProgram(Handle);
             int validatationStatus;
-            GL.Instance.GetProgram(Handle, ProgramPropertyARB.ValidateStatus, out validatationStatus);
+            GLController.Instance.GetProgram(Handle, ProgramPropertyARB.ValidateStatus, out validatationStatus);
             if (validatationStatus == 0)
             {
                 Utils.Log("Error validating shader program: Could not validate shader program!", LogLevel.Error);
-                Utils.Log(GL.Instance.GetProgramInfoLog(Handle), LogLevel.Warning);
+                Utils.Log(GLController.Instance.GetProgramInfoLog(Handle), LogLevel.Warning);
             }
 
-            GL.Instance.UseProgram(Handle);
+            GLController.Instance.UseProgram(Handle);
         }
 
         public void Unbind()
         {
-            GL.Instance.UseProgram(0);
+            GLController.Instance.UseProgram(0);
         }
 
         private int GetUniformLocation(string uniformName)
@@ -105,7 +104,7 @@ namespace Easy2D
             }
             else
             {
-                int foundUniformLocation = GL.Instance.GetUniformLocation(Handle, uniformName);
+                int foundUniformLocation = GLController.Instance.GetUniformLocation(Handle, uniformName);
 
                 if (foundUniformLocation == -1)
                     Utils.Log($"Could not add uniform: '{uniformName}'", LogLevel.Warning);
@@ -118,50 +117,50 @@ namespace Easy2D
 
         public void SetInt(string uniformName, int value)
         {
-            GL.Instance.Uniform1(GetUniformLocation(uniformName), value);
+            GLController.Instance.Uniform1(GetUniformLocation(uniformName), value);
         }
 
         public void SetFloat(string uniformName, float value)
         {
-            GL.Instance.Uniform1(GetUniformLocation(uniformName), value);
+            GLController.Instance.Uniform1(GetUniformLocation(uniformName), value);
         }
 
         public void SetDouble(string uniformName, double value)
         {
-            GL.Instance.Uniform1(GetUniformLocation(uniformName), (float)value);
+            GLController.Instance.Uniform1(GetUniformLocation(uniformName), (float)value);
         }
 
         public void SetVector(string uniformName, Vector2 value)
         {
-            GL.Instance.Uniform2(GetUniformLocation(uniformName), value.X, value.Y);
+            GLController.Instance.Uniform2(GetUniformLocation(uniformName), value.X, value.Y);
         }
 
         public void SetVector(string uniformName, Vector3 value)
         {
-            GL.Instance.Uniform3(GetUniformLocation(uniformName), value.X, value.Y, value.Z);
+            GLController.Instance.Uniform3(GetUniformLocation(uniformName), value.X, value.Y, value.Z);
         }
 
         public void SetVector(string uniformName, Vector4 value)
         {
-            GL.Instance.Uniform4(GetUniformLocation(uniformName), value.X, value.Y, value.Z, value.W);
+            GLController.Instance.Uniform4(GetUniformLocation(uniformName), value.X, value.Y, value.Z, value.W);
         }
 
         public void SetBoolean(string uniformName, bool value)
         {
-            GL.Instance.Uniform1(GetUniformLocation(uniformName), value ? 1 : 0);
+            GLController.Instance.Uniform1(GetUniformLocation(uniformName), value ? 1 : 0);
         }
 
         public void SetMatrix(string uniformName, Matrix4 value, bool transpose = true)
         {
             unsafe
             {
-                GL.Instance.UniformMatrix4(GetUniformLocation(uniformName), 1, transpose, (float*)&value);
+                GLController.Instance.UniformMatrix4(GetUniformLocation(uniformName), 1, transpose, (float*)&value);
             }
         }
 
         public void SetIntArray(string uniformName, int[] values)
         {
-            GL.Instance.Uniform1(GetUniformLocation(uniformName), values);
+            GLController.Instance.Uniform1(GetUniformLocation(uniformName), values);
         }
 
         private string readShaderFromFile(Stream fileName, ShaderType shaderType)
@@ -197,7 +196,7 @@ namespace Easy2D
 
         protected override void initialize(int? slot)
         {
-            Handle = GL.Instance.CreateProgram();
+            Handle = GLController.Instance.CreateProgram();
 
             if (Handle == 0)
             {
@@ -212,12 +211,12 @@ namespace Easy2D
 
         protected override void bind(int? slot)
         {
-            GL.Instance.UseProgram(Handle);
+            GLController.Instance.UseProgram(Handle);
         }
 
         protected override void delete()
         {
-            GL.Instance.DeleteProgram(Handle);
+            GLController.Instance.DeleteProgram(Handle);
             Handle = uint.MaxValue;
         }
     }

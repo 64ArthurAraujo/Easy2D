@@ -1,11 +1,7 @@
 ﻿using Easy2D;
 using OpenTK.Mathematics;
 using Silk.NET.OpenGLES;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Easy2D.OpenGL;
 
 namespace MultithreadTest
 {
@@ -17,10 +13,10 @@ namespace MultithreadTest
 
         static BatchRenderer()
         {
-            if (GL.Instance == null)
+            if (GLController.Instance == null)
                 throw new Exception("GL isn't initialized");
 
-            s_MaxTextureSlots = GL.MaxTextureSlots;
+            s_MaxTextureSlots = GLController.MaxTextureSlots;
             s_TextureSlots = new int[s_MaxTextureSlots];
 
             for (byte i = 0; i < s_MaxTextureSlots; i++)
@@ -64,10 +60,10 @@ namespace MultithreadTest
             }
             else
             {
-                if (texturesToBind.Count == GL.MaxTextureSlots)
+                if (texturesToBind.Count == GLController.MaxTextureSlots)
                 {
                     Draw();
-                    Utils.Log($"Renderer flushed because of texture limit: {GL.MaxTextureSlots}", LogLevel.Debug);
+                    Utils.Log($"Renderer flushed because of texture limit: {GLController.MaxTextureSlots}", LogLevel.Debug);
                 }
 
                 int slotToAdd = textureBindIndex;
@@ -119,8 +115,8 @@ namespace MultithreadTest
         {
             RenderScheduler.Enqueue(() =>
             {
-                graphics.DrawString($"FPS: {FPS} UPS: {UPS}\nDrawCalls: {GL.DrawCalls} Quads: {graphics.IndicesDrawn / 4}", Font.DefaultFont, new Vector2(10), Colors.White, 0.5f);
-                GL.ResetStatistics();
+                graphics.DrawString($"FPS: {FPS} UPS: {UPS}\nDrawCalls: {GLController.DrawCalls} Quads: {graphics.IndicesDrawn / 4}", Font.DefaultFont, new Vector2(10), Colors.White, 0.5f);
+                GLController.ResetStatistics();
                 graphics.ResetStatistics();
 
                 graphics.DrawRectangleCentered(quadPosition, quadSize, Colors.White);

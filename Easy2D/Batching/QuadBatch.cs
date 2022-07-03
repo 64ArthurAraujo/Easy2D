@@ -1,8 +1,7 @@
 ﻿using Silk.NET.OpenGLES;
 using System;
-using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using System.Text;
+using Easy2D.OpenGL;
 
 namespace Easy2D
 {
@@ -96,13 +95,12 @@ namespace Easy2D
 
                 vao.Bind();
 
-                //lol
                 if (updateIndices)
                     updateAction();
                 else
                     ibo.Bind();
 
-                GL.DrawElements(PrimitiveType.Triangles, quadIndex, DrawElementsType.UnsignedInt, null);
+                GLController.DrawElements(PrimitiveType.Triangles, quadIndex, DrawElementsType.UnsignedInt, null);
 
                 quadIndex = 0;
             }

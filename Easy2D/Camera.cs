@@ -19,7 +19,6 @@ namespace Easy2D
             Projection = Matrix4.CreateTranslation(Position.X, Position.Y, 0) * 
                 Matrix4.CreateRotationZ(Rotation) * 
                 Matrix4.CreateScale(Scale) * 
-                //Matrix4.CreateTranslation(Size.X / 2, Size.Y / 2, 0) * 
                 Matrix4.CreateOrthographicOffCenter(0, Size.X, Size.Y, 0, -1, 1);
         }
     }

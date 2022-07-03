@@ -1,4 +1,5 @@
 ﻿using OpenTK.Mathematics;
+using Easy2D.OpenGL;
 
 namespace Easy2D
 {
@@ -20,8 +21,8 @@ namespace Easy2D
             if (CurrentViewport != dimensions)
             {
                 CurrentViewport = dimensions;
-                GL.Instance.Viewport(dimensions.X, dimensions.Y, (uint)dimensions.Z, (uint)dimensions.W);
-                GL.Instance.Scissor(dimensions.X, dimensions.Y, (uint)dimensions.Z, (uint)dimensions.W);
+                GLController.Instance.Viewport(dimensions.X, dimensions.Y, (uint)dimensions.Z, (uint)dimensions.W);
+                GLController.Instance.Scissor(dimensions.X, dimensions.Y, (uint)dimensions.Z, (uint)dimensions.W);
             }
         }
     }
