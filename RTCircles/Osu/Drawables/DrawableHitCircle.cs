@@ -1,12 +1,10 @@
-﻿using Easy2D;
-using Easy2D.Game;
-using OpenTK.Mathematics;
+﻿using OpenTK.Mathematics;
 using OsuParsers.Beatmaps.Objects;
 using OsuParsers.Enums.Beatmaps;
 using Silk.NET.Input;
 using System;
-using System.Text;
-using System.Threading.Tasks;
+using Easy2D;
+using Easy2D.Easing;
 
 namespace RTCircles
 {

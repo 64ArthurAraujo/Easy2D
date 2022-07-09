@@ -1,7 +1,8 @@
-﻿using Easy2D;
-using OpenTK.Mathematics;
+﻿using OpenTK.Mathematics;
 using System;
 using System.Collections.Generic;
+using Easy2D;
+using Easy2D.Easing;
 
 namespace New
 {

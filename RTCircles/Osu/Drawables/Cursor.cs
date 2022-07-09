@@ -1,11 +1,9 @@
-﻿using Easy2D;
-using Easy2D.Game;
-using OpenTK.Mathematics;
+﻿using OpenTK.Mathematics;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Easy2D;
+using Easy2D.Game;
+using Easy2D.Easing;
 
 namespace RTCircles
 {

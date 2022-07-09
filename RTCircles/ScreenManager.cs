@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using Easy2D.OpenGL;
+using Easy2D.Easing;
 
 namespace RTCircles
 {

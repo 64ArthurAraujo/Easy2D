@@ -1,4 +1,5 @@
 ﻿using Easy2D;
+using Easy2D.Easing;
 
 namespace RTCircles
 {

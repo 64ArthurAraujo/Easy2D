@@ -3,7 +3,7 @@
 using OpenTK.Mathematics;
 using System;
 
-namespace Easy2D
+namespace Easy2D.Easing
 {
     public static class Interpolation
     {

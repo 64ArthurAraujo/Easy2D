@@ -1,7 +1,8 @@
-﻿using Easy2D;
-using OpenTK.Mathematics;
+﻿using OpenTK.Mathematics;
 using Silk.NET.Input;
 using System;
+using Easy2D;
+using Easy2D.Easing;
 
 namespace RTCircles
 {

@@ -9,6 +9,7 @@ using System.Text;
 using Easy2D;
 using Easy2D.Game;
 using Easy2D.OpenGL;
+using Easy2D.Easing;
 
 namespace RTCircles
 {

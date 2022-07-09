@@ -1,6 +1,7 @@
-﻿using Easy2D;
-using OpenTK.Mathematics;
+﻿using OpenTK.Mathematics;
 using System;
+using Easy2D;
+using Easy2D.Easing;
 
 namespace RTCircles
 {
