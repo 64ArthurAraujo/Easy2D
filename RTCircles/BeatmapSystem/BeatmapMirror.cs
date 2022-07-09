@@ -1,22 +1,20 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Easy2D;
 using Newtonsoft.Json;
-using OpenTK.Mathematics;
 using OsuParsers.Beatmaps;
 using OsuParsers.Decoders;
 using Realms;
+using Easy2D.Schedulers;
+
 
 namespace RTCircles
 {
@@ -105,73 +103,6 @@ namespace RTCircles
                 Utils.Log($"Started Realm Thread.", LogLevel.Important);
                 Utils.Log($"Realm Path: {realm.Config.DatabasePath}", LogLevel.Important);
 
-                /*
-                {
-                    byte[] buffer = new byte[1024];
-                    Utils.Log($"Checking database integrity...", LogLevel.Info);
-                    foreach (var item in realm.All<DBBeatmapInfo>())
-                    {
-                        if (item.SetInfo == null)
-                        {
-                            Utils.Log($"The Set info was null", LogLevel.Error);
-                            continue;
-                        }
-
-                        string originalHash = item.Hash;
-
-                        string file = $"{BeatmapMirror.SongsFolder}/{item.SetInfo.Foldername}/{item.Filename}";
-
-                        if (item.SetInfo.Beatmaps.Count == 0)
-                            Utils.Log($"The Set info has 0 beatmaps", LogLevel.Error);
-
-                        if (!File.Exists(file))
-                        {
-                            Utils.Log($"{file} doesn't exist!", LogLevel.Error);
-                            continue;
-                        }
-
-                        using (var fs = File.OpenRead(file))
-                        {
-                            int length = (int)fs.Length;
-
-                            if (length > buffer.Length)
-                                Array.Resize(ref buffer, length);
-
-                            fs.Read(buffer, 0, length);
-                            var newHash = Utils.ComputeSHA256Hash(buffer, 0, length);
-
-                            //Console.WriteLine($"{originalHash} -> {newHash}");
-                        }
-                    }
-
-                    Utils.Log($"Checking beatmap sets integrity...", LogLevel.Info);
-                    foreach (var item in realm.All<DBBeatmapSetInfo>())
-                    {
-                        if (item.Beatmaps.Count == 0)
-                        {
-                            Utils.Log($"{item.Foldername} has no beatmaps in it!", LogLevel.Error);
-
-                            Utils.Log($"Deleting", LogLevel.Info);
-                            try
-                            {
-                                System.IO.Directory.Delete($"{BeatmapMirror.SongsFolder}/{item.Foldername}", true);
-                                Utils.Log($"Done!", LogLevel.Success);
-                            }
-                            catch (Exception ex)
-                            {
-                                Utils.Log($"Fail!", LogLevel.Error);
-                            }
-                        }
-
-                        realm.Write(() =>
-                        {
-                            realm.Remove(item);
-                        });
-                    }
-
-                    Utils.Log($"Done!", LogLevel.Success);
-                }
-                */
                 while (MainGame.Instance.View.IsClosing == false)
                 {
                     Scheduler.RunPendingTasks();
@@ -476,17 +407,6 @@ namespace RTCircles
         //90000000+ social credits 中国中国中国中国中国中国中国中国中国中国中国中国中国中国中国中国
         public static SayobotBeatmapList Sayobot_GetBeatmapList(string searchQuery, int offset = 0, int limit = 25)
         {
-            /*
-            class: 31
-            cmd: "beatmaplist"
-            genre: 1535
-            keyword: "lol"
-            language: 4095
-            limit: 25
-            mode: 1
-            offset: 0
-            subtype: 63
-            type: "search"*/
             SearchQuery query = new SearchQuery();
             query.@class = 31;
             query.cmd = "beatmaplist";
@@ -511,5 +431,3 @@ namespace RTCircles
         }
     }
 }
-
-//90000000+ social credits

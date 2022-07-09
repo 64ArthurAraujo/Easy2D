@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Threading;
 
-namespace Easy2D
+namespace Easy2D.Schedulers
 {
     /// <summary>
     /// Schedule tasks to be run, schedule them on any thread, schedule them under water

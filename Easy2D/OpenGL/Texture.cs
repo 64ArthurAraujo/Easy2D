@@ -7,6 +7,7 @@ using Silk.NET.OpenGLES;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 using Easy2D.OpenGL;
+using Easy2D.Schedulers;
 
 namespace Easy2D
 {

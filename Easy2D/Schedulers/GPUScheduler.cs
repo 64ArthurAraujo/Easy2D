@@ -1,4 +1,4 @@
-﻿namespace Easy2D
+﻿namespace Easy2D.Schedulers
 {
     public class GPUSched : Scheduler
     {

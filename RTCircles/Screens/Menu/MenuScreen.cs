@@ -1,9 +1,7 @@
 ﻿using Easy2D;
 using OpenTK.Mathematics;
 using Silk.NET.Input;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Easy2D.Schedulers;
 
 namespace RTCircles
 {

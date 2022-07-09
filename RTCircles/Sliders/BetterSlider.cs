@@ -5,6 +5,8 @@ using System;
 using System.Collections.Generic;
 using Easy2D.OpenGL;
 using Easy2D.Batching;
+using Easy2D.Schedulers;
+
 
 namespace RTCircles
 {

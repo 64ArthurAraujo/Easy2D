@@ -1,5 +1,6 @@
 ﻿using Easy2D;
 using Easy2D.Effects;
+using Easy2D.Schedulers;
 
 
 namespace RTCircles

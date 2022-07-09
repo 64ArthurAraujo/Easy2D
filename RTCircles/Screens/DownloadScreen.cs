@@ -5,6 +5,8 @@ using Silk.NET.Input;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using Easy2D.Schedulers;
+
 
 namespace RTCircles
 {

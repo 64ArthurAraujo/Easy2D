@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using Easy2D.Schedulers;
 
 namespace Easy2D
 {

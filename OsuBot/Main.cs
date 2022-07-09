@@ -6,6 +6,8 @@ using OpenTK.Mathematics;
 using FFMediaToolkit;
 using FFMediaToolkit.Encoding;
 using Easy2D.OpenGL;
+using Easy2D.Schedulers;
+
 
 namespace OsuBot
 {

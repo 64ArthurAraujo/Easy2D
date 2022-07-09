@@ -8,6 +8,9 @@ using Silk.NET.OpenGLES;
 using Silk.NET.SDL;
 using Silk.NET.Windowing;
 using Easy2D.OpenGL;
+using Easy2D.Effects;
+using Easy2D.Schedulers;
+
 
 namespace Easy2D.Game
 {

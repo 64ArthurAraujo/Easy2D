@@ -9,7 +9,7 @@ using System.Runtime;
 using System.Runtime.CompilerServices;
 using Easy2D.OpenGL;
 using Easy2D.Effects;
-
+using Easy2D.Schedulers;
 
 namespace Easy2D.Game
 {

@@ -11,6 +11,7 @@ using Easy2D.Game;
 using Easy2D.OpenGL;
 using Easy2D.Easing;
 using Easy2D.Effects;
+using Easy2D.Schedulers;
 
 
 namespace RTCircles
