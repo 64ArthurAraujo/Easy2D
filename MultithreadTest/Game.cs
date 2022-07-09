@@ -2,6 +2,7 @@
 using OpenTK.Mathematics;
 using Silk.NET.OpenGLES;
 using Easy2D.OpenGL;
+using Easy2D.Batching;
 
 namespace MultithreadTest
 {

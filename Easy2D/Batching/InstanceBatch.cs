@@ -6,7 +6,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using Easy2D.OpenGL;
 
-namespace Easy2D
+namespace Easy2D.Batching
 {
     /// <summary>
     /// Name is slightly misleading, we're not batching instances together, just standard instanced rendering

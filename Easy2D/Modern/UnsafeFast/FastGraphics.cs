@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Easy2D.OpenGL;
+using Easy2D.Batching;
 
 namespace Easy2D
 {

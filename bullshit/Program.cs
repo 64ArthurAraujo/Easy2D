@@ -1,16 +1,11 @@
 ﻿using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Running;
-using Easy2D;
-using Realms;
 using System.Diagnostics;
-using System.Numerics;
 using System.Reflection;
 using System.Runtime;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-using RTCircles;
 using System.Security.Cryptography;
-using System.Text;
+using Easy2D;
+using Easy2D.Batching;
 
 class Program
 {

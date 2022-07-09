@@ -2,7 +2,7 @@
 using System;
 using Easy2D.OpenGL;
 
-namespace Easy2D
+namespace Easy2D.Batching
 {
     /// <summary>
     /// Batch different primitive types together into one drawcall and alot of wasted memory

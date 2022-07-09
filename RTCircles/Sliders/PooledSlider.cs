@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using Easy2D;
 using Easy2D.OpenGL;
+using Easy2D.Batching;
 
 namespace RTCircles
 {

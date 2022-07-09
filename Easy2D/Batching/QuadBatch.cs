@@ -3,7 +3,7 @@ using System;
 using System.Runtime.InteropServices;
 using Easy2D.OpenGL;
 
-namespace Easy2D
+namespace Easy2D.Batching
 {
     public unsafe class QuadBatch<T> where T : unmanaged
     {
