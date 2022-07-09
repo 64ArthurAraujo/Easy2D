@@ -4,6 +4,8 @@ using Easy2D;
 using Easy2D.Game;
 using OpenTK.Mathematics;
 using Silk.NET.Input;
+using Easy2D.Effects;
+
 
 namespace PogGame
 {

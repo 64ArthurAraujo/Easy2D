@@ -5,10 +5,10 @@ using Silk.NET.Input;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Threading;
+using Easy2D.Effects;
+
 
 namespace New
 {

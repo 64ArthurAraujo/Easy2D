@@ -8,6 +8,8 @@ using System.Diagnostics;
 using System.Runtime;
 using System.Runtime.CompilerServices;
 using Easy2D.OpenGL;
+using Easy2D.Effects;
+
 
 namespace Easy2D.Game
 {

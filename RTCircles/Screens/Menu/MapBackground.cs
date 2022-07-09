@@ -4,6 +4,8 @@ using Easy2D;
 using Easy2D.Game;
 using Easy2D.OpenGL;
 using Easy2D.Easing;
+using Easy2D.Effects;
+
 
 namespace RTCircles
 {

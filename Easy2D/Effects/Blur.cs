@@ -2,7 +2,7 @@
 using Silk.NET.OpenGLES;
 using Easy2D.OpenGL;
 
-namespace Easy2D
+namespace Easy2D.Effects
 {
     public static class Blur
     {

@@ -3,6 +3,8 @@ using Easy2D.Game;
 using OpenTK.Mathematics;
 using Silk.NET.Input;
 using System;
+using Easy2D.Effects;
+
 
 namespace RTCircles
 {
